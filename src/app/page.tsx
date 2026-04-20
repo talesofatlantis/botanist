@@ -194,7 +194,7 @@ export default function Home() {
       </header>
 
       {/* Canvas */}
-      <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6">
+      <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 pt-16">
         {phase === "idle" && (
           <FadeIn className="relative w-full max-w-xs mb-12 select-none flex flex-col items-center text-center">
             {/* Portrait image above title */}
