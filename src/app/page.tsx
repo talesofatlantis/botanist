@@ -201,7 +201,7 @@ export default function Home() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="https://cdn.midjourney.com/5c09bef3-c39a-4a13-bdc5-17d771e45e14/0_0.png" alt="" className="w-48 aspect-[2/3] object-cover mb-6" />
             {/* Title */}
-            <h1 style={{ fontFamily: "'Mona Sans', sans-serif", fontWeight: 300, fontStretch: "125%", fontSize: "clamp(28px, 5vw, 48px)", letterSpacing: "-0.02em", lineHeight: 1, color: "inherit" }}>
+            <h1 style={{ fontFamily: "'Mona Sans', sans-serif", fontWeight: 200, fontStretch: "110%", fontSize: "clamp(18px, 3vw, 30px)", letterSpacing: "-0.01em", lineHeight: 1, color: "inherit" }}>
               The Botanist
             </h1>
             {/* Tagline */}
