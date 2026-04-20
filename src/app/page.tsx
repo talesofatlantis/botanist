@@ -259,7 +259,7 @@ export default function Home() {
               placeholder="Describe a memory, a scene, a feeling..."
               rows={3}
               autoFocus
-              className="resize-none bg-white border-[#e0e0e0] text-[#2d3828] placeholder:text-[#c8c8c8] focus-visible:ring-[#8aaa6e] focus-visible:border-[#8aaa6e] font-mono text-sm rounded-none transition-all"
+              className="resize-none bg-white border-[#e0e0e0] text-[#2d3828] placeholder:text-[#c8c8c8] focus-visible:ring-0 focus-visible:border-[#e0e0e0] font-mono text-sm rounded-none transition-all"
             />
             <div className="flex items-center justify-between">
               <span className="text-[10px] text-[#b8b0a4] font-mono tracking-widest">
@@ -269,7 +269,7 @@ export default function Home() {
                 onClick={handleSubmit}
                 disabled={!memory.trim() || submitted}
                 variant="outline"
-                className="bg-[#e8f0dc] hover:bg-[#dceacc] text-[#4a5e3a] border border-[#c4d4b4] font-mono text-xs tracking-widest uppercase disabled:opacity-30 transition-all"
+                className="bg-[#e8e8e8] hover:bg-[#d8d8d8] text-[#6a6a6a] border border-[#d8d8d8] rounded-none font-mono text-xs tracking-widest uppercase disabled:opacity-30 transition-all"
               >
                 Submit memory
               </Button>
