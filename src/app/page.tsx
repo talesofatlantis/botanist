@@ -1,13 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
-
-const InfiniteGallery = dynamic(
-  () => import("@/components/ui/3d-gallery-photography"),
-  { ssr: false }
-);
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -202,32 +196,25 @@ export default function Home() {
       {/* Canvas */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6">
         {phase === "idle" && (
-          <FadeIn className="relative w-full flex-1 flex items-center justify-center mb-12 select-none">
-            {/* 3D gallery background */}
-            <div className="absolute inset-0 pointer-events-none">
-              <InfiniteGallery
-                images={[
-                  { src: "https://cdn.midjourney.com/5c09bef3-c39a-4a13-bdc5-17d771e45e14/0_0.png", alt: "" },
-                  { src: "https://cdn.midjourney.com/8c3c4317-9661-477f-843e-3379155392a3/0_3.png", alt: "" },
-                  { src: "https://cdn.midjourney.com/282ede88-276e-407e-ad46-92929ebdebb5/0_0.png", alt: "" },
-                  { src: "https://cdn.midjourney.com/5c09bef3-c39a-4a13-bdc5-17d771e45e14/0_0.png", alt: "" },
-                  { src: "https://cdn.midjourney.com/8c3c4317-9661-477f-843e-3379155392a3/0_3.png", alt: "" },
-                  { src: "https://cdn.midjourney.com/282ede88-276e-407e-ad46-92929ebdebb5/0_0.png", alt: "" },
-                ]}
-                speed={0.6}
-                visibleCount={10}
-                className="w-full h-full"
-              />
+          <FadeIn className="relative w-full max-w-lg mb-12 select-none flex flex-col items-center text-center">
+            {/* Left background image */}
+            <div className="hidden md:block pointer-events-none absolute -left-44 top-1/2 -translate-y-1/2 w-32 aspect-[2/3]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="https://cdn.midjourney.com/5c09bef3-c39a-4a13-bdc5-17d771e45e14/0_0.png" alt="" className="w-full h-full object-cover grayscale opacity-[0.12] dark:opacity-[0.07]" />
             </div>
-            {/* Title + tagline */}
-            <div className="relative z-10 flex flex-col items-center text-center">
-              <h1 className="font-mono tracking-[0.1em] uppercase text-[#4a5e3a] dark:text-[#c0c0be] font-light" style={{ fontSize: "clamp(16px, 2.5vw, 22px)" }}>
-                The Botanist
-              </h1>
-              <p className="mt-4 font-mono text-[11px] tracking-[0.15em] text-[#a8b89a] dark:text-[#707070] leading-relaxed" style={{ maxWidth: "36ch" }}>
-                A quantum algorithm that collapses your memories into something new.
-              </p>
+            {/* Right background image */}
+            <div className="hidden md:block pointer-events-none absolute -right-44 top-1/2 -translate-y-1/2 w-32 aspect-[2/3]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="https://cdn.midjourney.com/8c3c4317-9661-477f-843e-3379155392a3/0_3.png" alt="" className="w-full h-full object-cover grayscale opacity-[0.12] dark:opacity-[0.07]" />
             </div>
+            {/* Title */}
+            <h1 className="font-mono tracking-[0.1em] uppercase text-[#4a5e3a] dark:text-[#c0c0be] font-light" style={{ fontSize: "clamp(16px, 2.5vw, 22px)" }}>
+              The Botanist
+            </h1>
+            {/* Tagline */}
+            <p className="mt-4 font-mono text-[11px] tracking-[0.15em] text-[#a8b89a] dark:text-[#707070] leading-relaxed" style={{ maxWidth: "36ch" }}>
+              A quantum algorithm that collapses your memories into something new.
+            </p>
           </FadeIn>
         )}
 
@@ -249,7 +236,7 @@ export default function Home() {
         {phase === "done" ? (
           <FadeIn className="flex flex-col items-center gap-6 w-full max-w-2xl">
             {/* Generated image */}
-            <div className="w-full max-w-sm aspect-[2/3] border border-[#e8e8e8] dark:border-[#222220] overflow-hidden flex items-center justify-center bg-[#f9f9f7] dark:bg-[#141412]">
+            <div className="w-full max-w-2xl aspect-video border border-[#e8e8e8] dark:border-[#222220] overflow-hidden flex items-center justify-center bg-[#f9f9f7] dark:bg-[#141412]">
               {imageUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={imageUrl} alt="Generated memory" className="w-full h-full object-cover" />
