@@ -154,31 +154,36 @@ export default function Home() {
       {/* Canvas */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6">
         {phase === "idle" && (
-          <div className="text-center space-y-3 mb-16 select-none">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="https://cdn.midjourney.com/5c09bef3-c39a-4a13-bdc5-17d771e45e14/0_0.png"
-              alt="The Botanist"
-              className="w-56 h-72 object-cover mx-auto mb-6 opacity-90 ring-1 ring-[#c8d4b4]"
-            />
-            <h1
-              style={{
-                fontFamily: "'Mona Sans', sans-serif",
-                fontWeight: 300,
-                fontStretch: "125%",
-                fontSize: "clamp(28px, 5vw, 48px)",
-                letterSpacing: "-0.02em",
-                lineHeight: 1,
-                color: "#1a1f17",
-              }}
-            >
-              The Botanist
-            </h1>
-            <p className="text-sm text-[#7a8c6e] max-w-sm mx-auto leading-relaxed font-mono">
-              An algorithm that reshapes your memory by passing it through
-              a quantum circuit where decoherence and measurement collapse
-              the outcome.
-            </p>
+          <div className="w-full max-w-sm mb-12 select-none">
+            {/* Title */}
+            <div className="pb-5 border-b border-[#e8e8e8]">
+              <h1
+                style={{
+                  fontFamily: "'Mona Sans', sans-serif",
+                  fontWeight: 300,
+                  fontStretch: "125%",
+                  fontSize: "clamp(28px, 5vw, 48px)",
+                  letterSpacing: "-0.02em",
+                  lineHeight: 1,
+                  color: "#1a1f17",
+                }}
+              >
+                The Botanist
+              </h1>
+            </div>
+
+            {/* Spec rows */}
+            {[
+              { label: "Type",    value: "Quantum memory interface" },
+              { label: "Circuit", value: "Qiskit Aer · up to 16 qubits" },
+              { label: "Method",  value: "Decoherence + measurement collapse" },
+              { label: "Output",  value: "Synonym / modifier mutation" },
+            ].map(({ label, value }) => (
+              <div key={label} className="flex items-baseline justify-between py-3 border-b border-[#f0f0ee]">
+                <span className="text-[9px] font-mono tracking-[0.2em] uppercase text-[#c0c8b8]">{label}</span>
+                <span className="text-[10px] font-mono text-[#7a8c6e]">{value}</span>
+              </div>
+            ))}
           </div>
         )}
 
