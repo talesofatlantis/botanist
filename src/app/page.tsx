@@ -25,7 +25,23 @@ export default function Home() {
   const [bitstring, setBitstring] = useState("");
   const [trace, setTrace] = useState<WordTrace[]>([]);
   const [errorMsg, setErrorMsg] = useState("");
+  const [dark, setDark] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const isDark = saved ? saved === "dark" : prefersDark;
+    setDark(isDark);
+    document.documentElement.classList.toggle("dark", isDark);
+  }, []);
+
+  const toggleDark = () => {
+    const next = !dark;
+    setDark(next);
+    document.documentElement.classList.toggle("dark", next);
+    localStorage.setItem("theme", next ? "dark" : "light");
+  };
 
   // Both the API call and the step animation must finish before we go to "done"
   const apiDataRef = useRef<{ mutated: string; bitstring: string; trace: WordTrace[] } | null>(null);
@@ -97,11 +113,11 @@ export default function Home() {
   };
 
   return (
-    <main className="relative min-h-screen bg-white text-[#2d3828] flex flex-col overflow-hidden">
+    <main className="relative min-h-screen bg-white dark:bg-[#0f0f0d] text-[#2d3828] dark:text-[#c8d4b4] flex flex-col overflow-hidden">
       {/* Flickering grain */}
       <GrainOverlay />
       {/* Vignette */}
-      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(ellipse_at_center,transparent_50%,#f0f0f0_100%)]" />
+      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(ellipse_at_center,transparent_50%,#f0f0f0_100%)] dark:bg-[radial-gradient(ellipse_at_center,transparent_50%,#000000_100%)]" />
 
       {/* Header */}
       <header className="relative z-10 flex items-center justify-between px-8 pt-8 pb-4">
@@ -117,18 +133,33 @@ export default function Home() {
           {phase !== "idle" && (
             <Badge
               variant="outline"
-              className="font-mono text-[10px] tracking-widest uppercase border-[#c4d4b4] text-[#6b7a5e] bg-transparent animate-pulse"
+              className="font-mono text-[10px] tracking-widest uppercase border-[#c4d4b4] text-[#6b7a5e] bg-transparent animate-pulse dark:border-[#3a4a34] dark:text-[#8aaa6e]"
             >
               {phaseLabel[phase]}
             </Badge>
           )}
+          <button
+            onClick={toggleDark}
+            aria-label="Toggle dark mode"
+            className="p-1 text-[#a8b89a] hover:text-[#4a5e3a] dark:text-[#5a7a4e] dark:hover:text-[#8aaa6e] transition-colors outline-none"
+          >
+            {dark ? (
+              <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+                <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 1.78a1 1 0 011.42 1.42l-.71.7a1 1 0 11-1.42-1.41l.71-.71zM18 9a1 1 0 110 2h-1a1 1 0 110-2h1zM4.22 15.78a1 1 0 001.42-1.42l-.71-.7a1 1 0 00-1.42 1.41l.71.71zM2 10a1 1 0 011-1h1a1 1 0 110 2H3a1 1 0 01-1-1zm12.95 4.95a1 1 0 001.41-1.41l-.7-.71a1 1 0 00-1.42 1.42l.71.7zM10 15a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.95-.05a1 1 0 00-1.41 1.41l.7.71a1 1 0 001.42-1.42l-.71-.7zM10 6a4 4 0 100 8 4 4 0 000-8z" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+              </svg>
+            )}
+          </button>
           <Sheet>
             <SheetTrigger className="flex flex-col gap-1.5 p-1 group outline-none" aria-label="Menu">
-              <span className="block w-5 h-px bg-[#a8b89a] transition-colors group-hover:bg-[#4a5e3a]" />
-              <span className="block w-5 h-px bg-[#a8b89a] transition-colors group-hover:bg-[#4a5e3a]" />
-              <span className="block w-5 h-px bg-[#a8b89a] transition-colors group-hover:bg-[#4a5e3a]" />
+              <span className="block w-5 h-px bg-[#a8b89a] transition-colors group-hover:bg-[#4a5e3a] dark:bg-[#3a5a2e] dark:group-hover:bg-[#8aaa6e]" />
+              <span className="block w-5 h-px bg-[#a8b89a] transition-colors group-hover:bg-[#4a5e3a] dark:bg-[#3a5a2e] dark:group-hover:bg-[#8aaa6e]" />
+              <span className="block w-5 h-px bg-[#a8b89a] transition-colors group-hover:bg-[#4a5e3a] dark:bg-[#3a5a2e] dark:group-hover:bg-[#8aaa6e]" />
             </SheetTrigger>
-            <SheetContent side="right" className="bg-white border-l border-[#e8e8e8] w-72">
+            <SheetContent side="right" className="bg-white dark:bg-[#0f0f0d] border-l border-[#e8e8e8] dark:border-[#222220] w-72">
               <nav className="mt-12 flex flex-col gap-1">
                 {[
                   { label: "About", href: "/" },
@@ -140,7 +171,7 @@ export default function Home() {
                   <a
                     key={item.label}
                     href={item.href}
-                    className="px-4 py-3 text-sm font-mono tracking-widest uppercase text-[#7a8c6e] hover:text-[#2d3828] hover:bg-[#f5f5f5] transition-colors"
+                    className="px-4 py-3 text-sm font-mono tracking-widest uppercase text-[#7a8c6e] hover:text-[#2d3828] hover:bg-[#f5f5f5] dark:text-[#5a7a4e] dark:hover:text-[#c8d4b4] dark:hover:bg-[#1a1a18] transition-colors"
                   >
                     {item.label}
                   </a>
@@ -156,7 +187,7 @@ export default function Home() {
         {phase === "idle" && (
           <FadeIn className="w-full max-w-sm mb-12 select-none">
             {/* Title */}
-            <div className="pb-5 border-b border-[#e8e8e8]">
+            <div className="pb-5 border-b border-[#e8e8e8] dark:border-[#222220]">
               <h1
                 style={{
                   fontFamily: "'Mona Sans', sans-serif",
@@ -179,9 +210,9 @@ export default function Home() {
               { label: "Method",  value: "Decoherence + measurement collapse" },
               { label: "Output",  value: "Synonym / modifier mutation" },
             ].map(({ label, value }) => (
-              <div key={label} className="flex items-baseline justify-between py-3 border-b border-[#f0f0ee]">
-                <span className="text-[9px] font-mono tracking-[0.2em] uppercase text-[#c0c8b8]">{label}</span>
-                <span className="text-[10px] font-mono text-[#7a8c6e]">{value}</span>
+              <div key={label} className="flex items-baseline justify-between py-3 border-b border-[#f0f0ee] dark:border-[#1e1e1c]">
+                <span className="text-[9px] font-mono tracking-[0.2em] uppercase text-[#c0c8b8] dark:text-[#3a4a34]">{label}</span>
+                <span className="text-[10px] font-mono text-[#7a8c6e] dark:text-[#6a8a5e]">{value}</span>
               </div>
             ))}
           </FadeIn>
@@ -206,17 +237,17 @@ export default function Home() {
           <FadeIn className="flex flex-col items-center gap-6 w-full max-w-2xl">
             {/* Prompts */}
             <div className="w-full space-y-2 text-center">
-              <p className="text-[10px] text-[#b0b8a8] font-mono tracking-widest uppercase">Original</p>
-              <p className="text-xs text-[#7a8c6e] font-mono italic">&ldquo;{memory}&rdquo;</p>
-              <p className="text-[10px] text-[#b0b8a8] font-mono tracking-widest uppercase mt-3">Quantum collapse</p>
-              <p className="text-xs text-[#2d3828] font-mono italic">&ldquo;{mutatedPrompt}&rdquo;</p>
+              <p className="text-[10px] text-[#b0b8a8] dark:text-[#3a4a34] font-mono tracking-widest uppercase">Original</p>
+              <p className="text-xs text-[#7a8c6e] dark:text-[#6a8a5e] font-mono italic">&ldquo;{memory}&rdquo;</p>
+              <p className="text-[10px] text-[#b0b8a8] dark:text-[#3a4a34] font-mono tracking-widest uppercase mt-3">Quantum collapse</p>
+              <p className="text-xs text-[#2d3828] dark:text-[#c8d4b4] font-mono italic">&ldquo;{mutatedPrompt}&rdquo;</p>
             </div>
 
             {/* Circuit trace */}
             {trace.length > 0 && (
-              <div className="w-full border border-[#e8e8e8]">
+              <div className="w-full border border-[#e8e8e8] dark:border-[#222220]">
                 {/* Header */}
-                <div className="grid grid-cols-[2fr_2fr_1fr_1fr_2fr] gap-0 border-b border-[#e8e8e8] bg-[#f9f9f7]">
+                <div className="grid grid-cols-[2fr_2fr_1fr_1fr_2fr] gap-0 border-b border-[#e8e8e8] dark:border-[#222220] bg-[#f9f9f7] dark:bg-[#141412]">
                   {["word", "output", "qubit", "bit / θ", "operation"].map((h) => (
                     <div key={h} className="px-3 py-2 text-[8px] font-mono tracking-[0.2em] uppercase text-[#b0b8a8]">
                       {h}
@@ -227,7 +258,7 @@ export default function Home() {
                 {trace.filter(t => t.operation !== "skip").map((t, i) => (
                   <div
                     key={i}
-                    className="grid grid-cols-[2fr_2fr_1fr_1fr_2fr] gap-0 border-b border-[#f0f0ee] last:border-0"
+                    className="grid grid-cols-[2fr_2fr_1fr_1fr_2fr] gap-0 border-b border-[#f0f0ee] dark:border-[#1e1e1c] last:border-0"
                   >
                     <div className="px-3 py-2 text-[10px] font-mono text-[#7a8c6e]">{t.original}</div>
                     <div className={`px-3 py-2 text-[10px] font-mono ${t.operation === "unchanged" ? "text-[#b0b8a8]" : "text-[#2d3828]"}`}>
@@ -243,7 +274,7 @@ export default function Home() {
                   </div>
                 ))}
                 {/* Bitstring footer */}
-                <div className="px-3 py-2 bg-[#f9f9f7] border-t border-[#e8e8e8]">
+                <div className="px-3 py-2 bg-[#f9f9f7] dark:bg-[#141412] border-t border-[#e8e8e8] dark:border-[#222220]">
                   <span className="text-[8px] font-mono text-[#c8d4b4] tracking-widest break-all">{bitstring}</span>
                 </div>
               </div>
@@ -252,7 +283,7 @@ export default function Home() {
             <Button
               variant="outline"
               onClick={handleReset}
-              className="border-[#c4d4b4] text-[#6b7a5e] bg-transparent hover:bg-[#e8f0dc] hover:text-[#4a5e3a] font-mono text-xs tracking-widest uppercase"
+              className="border-[#c4d4b4] dark:border-[#2a3a24] text-[#6b7a5e] dark:text-[#4a6a3e] bg-transparent hover:bg-[#e8f0dc] dark:hover:bg-[#1a2218] hover:text-[#4a5e3a] dark:hover:text-[#8aaa6e] font-mono text-xs tracking-widest uppercase"
             >
               Plant another
             </Button>
@@ -268,7 +299,7 @@ export default function Home() {
               placeholder="Describe a memory, a scene, a feeling..."
               rows={3}
               autoFocus
-              className="resize-none bg-white border-[#e0e0e0] text-[#2d3828] placeholder:text-[#c8c8c8] focus-visible:ring-0 focus-visible:border-[#e0e0e0] font-mono text-sm rounded-none transition-all"
+              className="resize-none bg-white dark:bg-[#0f0f0d] border-[#e0e0e0] dark:border-[#222220] text-[#2d3828] dark:text-[#c8d4b4] placeholder:text-[#c8c8c8] dark:placeholder:text-[#2a2a28] focus-visible:ring-0 focus-visible:border-[#e0e0e0] dark:focus-visible:border-[#222220] font-mono text-sm rounded-none transition-all"
             />
             <div className="flex items-center justify-between">
               <span className="text-[10px] text-[#b8b0a4] font-mono tracking-widest">
@@ -278,7 +309,7 @@ export default function Home() {
                 onClick={handleSubmit}
                 disabled={!memory.trim() || submitted}
                 variant="outline"
-                className="bg-[#e8e8e8] hover:bg-[#d8d8d8] text-[#6a6a6a] border border-[#d8d8d8] rounded-none font-mono text-xs tracking-widest uppercase disabled:opacity-30 transition-all"
+                className="bg-[#e8e8e8] hover:bg-[#d8d8d8] dark:bg-[#1e1e1c] dark:hover:bg-[#2a2a28] text-[#6a6a6a] dark:text-[#5a5a58] border border-[#d8d8d8] dark:border-[#2a2a28] rounded-none font-mono text-xs tracking-widest uppercase disabled:opacity-30 transition-all"
               >
                 Submit memory
               </Button>
@@ -412,7 +443,7 @@ function QuantumSteps({ prompt, onComplete }: { prompt: string; onComplete: () =
         return (
           <div
             key={i}
-            className="flex items-center justify-between gap-4 px-4 py-3 border-b border-[#f0f0ee] transition-opacity duration-300"
+            className="flex items-center justify-between gap-4 px-4 py-3 border-b border-[#f0f0ee] dark:border-[#1e1e1c] transition-opacity duration-300"
             style={{ opacity: pending ? 0.25 : 1 }}
           >
             {/* Text */}
