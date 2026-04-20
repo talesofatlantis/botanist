@@ -405,15 +405,10 @@ function QuantumSteps({ prompt, onComplete }: { prompt: string; onComplete: () =
                   <polyline points="2,8 6,12 14,4" />
                 </svg>
               ) : current ? (
-                <div className="flex gap-0.5 items-end">
-                  {[0, 1, 2].map((j) => (
-                    <span
-                      key={j}
-                      className="block w-0.5 bg-[#a8c490] animate-pulse rounded-full"
-                      style={{ height: `${6 + j * 3}px`, animationDelay: `${j * 120}ms` }}
-                    />
-                  ))}
-                </div>
+                <svg className="w-3.5 h-3.5 text-[#8aaa6e] animate-spin" viewBox="0 0 16 16" fill="none">
+                  <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="2" strokeOpacity="0.2" />
+                  <path d="M8 2a6 6 0 0 1 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                </svg>
               ) : null}
             </div>
           </div>
