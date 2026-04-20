@@ -207,14 +207,12 @@ export default function Home() {
             <div className="absolute inset-0 pointer-events-none">
               <InfiniteGallery
                 images={[
-                  { src: "https://picsum.photos/seed/bot1/400/600", alt: "" },
-                  { src: "https://picsum.photos/seed/bot2/400/600", alt: "" },
-                  { src: "https://picsum.photos/seed/bot3/400/600", alt: "" },
-                  { src: "https://picsum.photos/seed/bot4/400/600", alt: "" },
-                  { src: "https://picsum.photos/seed/bot5/400/600", alt: "" },
-                  { src: "https://picsum.photos/seed/bot6/400/600", alt: "" },
-                  { src: "https://picsum.photos/seed/bot7/400/600", alt: "" },
-                  { src: "https://picsum.photos/seed/bot8/400/600", alt: "" },
+                  { src: "https://cdn.midjourney.com/5c09bef3-c39a-4a13-bdc5-17d771e45e14/0_0.png", alt: "" },
+                  { src: "https://cdn.midjourney.com/8c3c4317-9661-477f-843e-3379155392a3/0_3.png", alt: "" },
+                  { src: "https://cdn.midjourney.com/282ede88-276e-407e-ad46-92929ebdebb5/0_0.png", alt: "" },
+                  { src: "https://cdn.midjourney.com/5c09bef3-c39a-4a13-bdc5-17d771e45e14/0_0.png", alt: "" },
+                  { src: "https://cdn.midjourney.com/8c3c4317-9661-477f-843e-3379155392a3/0_3.png", alt: "" },
+                  { src: "https://cdn.midjourney.com/282ede88-276e-407e-ad46-92929ebdebb5/0_0.png", alt: "" },
                 ]}
                 speed={0.6}
                 visibleCount={10}
