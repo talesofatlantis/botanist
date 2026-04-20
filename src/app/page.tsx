@@ -359,14 +359,14 @@ function QuantumSteps({ prompt, onComplete }: { prompt: string; onComplete: () =
       if (i < steps.length) {
         setActive(i);
         const isLast = i === steps.length - 1;
-        const delay = isLast ? 1600 : 1400 + Math.random() * 300;
+        const delay = isLast ? 2200 : 2000 + Math.random() * 400;
         timer = setTimeout(() => {
           if (isLast) onComplete();
           else tick();
         }, delay);
       }
     };
-    let timer = setTimeout(tick, 900);
+    let timer = setTimeout(tick, 1000);
     return () => clearTimeout(timer);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -379,9 +379,9 @@ function QuantumSteps({ prompt, onComplete }: { prompt: string; onComplete: () =
         const pending = i > active;
         const isLast  = i === steps.length - 1;
         return (
-          <div key={i} className="flex gap-4">
+          <div key={i} className="flex gap-4" style={{ minHeight: 64 }}>
             {/* Left rail: circle + connector */}
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center" style={{ width: 24 }}>
               {/* Circle */}
               <div className={`relative w-6 h-6 rounded-full flex items-center justify-center shrink-0 transition-all duration-500 border ${
                 done    ? "bg-[#8aaa6e] border-[#8aaa6e]" :
@@ -398,37 +398,45 @@ function QuantumSteps({ prompt, onComplete }: { prompt: string; onComplete: () =
                   <span className="text-[8px] font-mono text-[#c8d4b4]">{i + 1}</span>
                 )}
               </div>
-              {/* Connector line */}
+              {/* Connector line — fixed height so nothing shifts */}
               {!isLast && (
-                <div className={`w-px flex-1 my-1 min-h-[16px] transition-colors duration-500 ${
-                  done ? "bg-[#8aaa6e]" : "bg-[#e8ede4]"
-                }`} />
+                <div
+                  className={`w-px transition-colors duration-500 ${done ? "bg-[#8aaa6e]" : "bg-[#e8ede4]"}`}
+                  style={{ flex: 1, marginTop: 4, marginBottom: 4 }}
+                />
               )}
             </div>
 
-            {/* Right: text */}
-            <div className={`pb-5 flex-1 pt-0.5 transition-opacity duration-300 ${pending ? "opacity-30" : "opacity-100"}`}>
+            {/* Right: text — always rendered, visibility via opacity only */}
+            <div
+              className="flex-1 pt-0.5 transition-opacity duration-500"
+              style={{ opacity: pending ? 0.25 : 1 }}
+            >
               <p className={`text-[10px] font-mono tracking-[0.18em] uppercase leading-none transition-colors duration-300 ${
                 current ? "text-[#2d3828]" : done ? "text-[#6b8a5e]" : "text-[#b8b8b8]"
               }`}>
                 {s.label}
               </p>
-              {(done || current) && (
-                <p className="text-[9px] font-mono text-[#b0b8a8] mt-1.5 leading-relaxed">
-                  {s.detail}
-                </p>
-              )}
-              {current && (
-                <div className="flex gap-0.5 items-end mt-2">
-                  {[0, 1, 2, 3].map((j) => (
-                    <span
-                      key={j}
-                      className="block w-0.5 bg-[#a8c490] animate-pulse rounded-full"
-                      style={{ height: `${6 + j * 3}px`, animationDelay: `${j * 120}ms` }}
-                    />
-                  ))}
-                </div>
-              )}
+              {/* Detail — always in DOM, opacity transition only */}
+              <p
+                className="text-[9px] font-mono text-[#b0b8a8] mt-1.5 leading-relaxed transition-opacity duration-500"
+                style={{ opacity: done || current ? 1 : 0 }}
+              >
+                {s.detail}
+              </p>
+              {/* Bar chart — always in DOM, opacity transition only */}
+              <div
+                className="flex gap-0.5 items-end mt-2 transition-opacity duration-300"
+                style={{ opacity: current ? 1 : 0, height: 15 }}
+              >
+                {[0, 1, 2, 3].map((j) => (
+                  <span
+                    key={j}
+                    className="block w-0.5 bg-[#a8c490] animate-pulse rounded-full"
+                    style={{ height: `${6 + j * 3}px`, animationDelay: `${j * 120}ms` }}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         );
