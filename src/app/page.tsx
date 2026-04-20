@@ -166,7 +166,7 @@ export default function Home() {
                 fontFamily: "'Mona Sans', sans-serif",
                 fontWeight: 300,
                 fontStretch: "125%",
-                fontSize: "clamp(38px, 7vw, 68px)",
+                fontSize: "clamp(28px, 5vw, 48px)",
                 letterSpacing: "-0.02em",
                 lineHeight: 1,
                 color: "#1a1f17",
