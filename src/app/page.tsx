@@ -164,11 +164,11 @@ export default function Home() {
             <h1
               style={{
                 fontFamily: "'Mona Sans', sans-serif",
-                fontWeight: 800,
+                fontWeight: 300,
                 fontStretch: "125%",
-                fontSize: "clamp(52px, 10vw, 96px)",
-                letterSpacing: "-0.03em",
-                lineHeight: 0.95,
+                fontSize: "clamp(38px, 7vw, 68px)",
+                letterSpacing: "-0.02em",
+                lineHeight: 1,
                 color: "#1a1f17",
               }}
             >
