@@ -196,17 +196,10 @@ export default function Home() {
       {/* Canvas */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6">
         {phase === "idle" && (
-          <FadeIn className="relative w-full max-w-lg mb-12 select-none flex flex-col items-center text-center">
-            {/* Left background image */}
-            <div className="hidden md:block pointer-events-none absolute -left-44 top-1/2 -translate-y-1/2 w-32 aspect-[2/3]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="https://cdn.midjourney.com/5c09bef3-c39a-4a13-bdc5-17d771e45e14/0_0.png" alt="" className="w-full h-full object-cover grayscale opacity-[0.12] dark:opacity-[0.07]" />
-            </div>
-            {/* Right background image */}
-            <div className="hidden md:block pointer-events-none absolute -right-44 top-1/2 -translate-y-1/2 w-32 aspect-[2/3]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="https://cdn.midjourney.com/8c3c4317-9661-477f-843e-3379155392a3/0_3.png" alt="" className="w-full h-full object-cover grayscale opacity-[0.12] dark:opacity-[0.07]" />
-            </div>
+          <FadeIn className="relative w-full max-w-xs mb-12 select-none flex flex-col items-center text-center">
+            {/* Portrait image above title */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="https://cdn.midjourney.com/5c09bef3-c39a-4a13-bdc5-17d771e45e14/0_0.png" alt="" className="w-48 aspect-[2/3] object-cover mb-6" />
             {/* Title */}
             <h1 className="font-mono tracking-[0.1em] uppercase text-[#4a5e3a] dark:text-[#c0c0be] font-light" style={{ fontSize: "clamp(16px, 2.5vw, 22px)" }}>
               The Botanist
