@@ -127,7 +127,7 @@ function Node({
   )
 }
 
-function Step({ n, text }: { n: number; text: string }) {
+function Step({ n, text }: { n: number | string; text: string }) {
   return (
     <div className="flex gap-2 items-start">
       <span className="text-[9px] text-[#8aaa6e] mt-0.5 shrink-0">{n}.</span>
