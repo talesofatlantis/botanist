@@ -124,7 +124,7 @@ export default function Home() {
   };
 
   return (
-    <main className="relative min-h-screen bg-white dark:bg-[#0f0f0d] text-[#2d3828] dark:text-[#c8d4b4] flex flex-col overflow-hidden">
+    <main className="relative min-h-screen bg-white dark:bg-[#0f0f0d] text-[#2d3828] dark:text-[#e8e8e6] flex flex-col overflow-hidden">
       {/* Flickering grain */}
       <GrainOverlay />
       {/* Vignette */}
@@ -144,7 +144,7 @@ export default function Home() {
           {phase !== "idle" && (
             <Badge
               variant="outline"
-              className="font-mono text-[10px] tracking-widest uppercase border-[#c4d4b4] text-[#6b7a5e] bg-transparent animate-pulse dark:border-[#3a4a34] dark:text-[#8aaa6e]"
+              className="font-mono text-[10px] tracking-widest uppercase border-[#c4d4b4] text-[#6b7a5e] bg-transparent animate-pulse dark:border-[#505050] dark:text-white"
             >
               {phaseLabel[phase]}
             </Badge>
@@ -152,7 +152,7 @@ export default function Home() {
           <button
             onClick={toggleDark}
             aria-label="Toggle dark mode"
-            className="p-1 text-[#a8b89a] hover:text-[#4a5e3a] dark:text-[#5a7a4e] dark:hover:text-[#8aaa6e] transition-colors outline-none"
+            className="p-1 text-[#a8b89a] hover:text-[#4a5e3a] dark:text-[#909090] dark:hover:text-white transition-colors outline-none"
           >
             {dark ? (
               <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
@@ -166,23 +166,23 @@ export default function Home() {
           </button>
           <Sheet>
             <SheetTrigger className="flex flex-col gap-1.5 p-1 group outline-none" aria-label="Menu">
-              <span className="block w-5 h-px bg-[#a8b89a] transition-colors group-hover:bg-[#4a5e3a] dark:bg-[#3a5a2e] dark:group-hover:bg-[#8aaa6e]" />
-              <span className="block w-5 h-px bg-[#a8b89a] transition-colors group-hover:bg-[#4a5e3a] dark:bg-[#3a5a2e] dark:group-hover:bg-[#8aaa6e]" />
-              <span className="block w-5 h-px bg-[#a8b89a] transition-colors group-hover:bg-[#4a5e3a] dark:bg-[#3a5a2e] dark:group-hover:bg-[#8aaa6e]" />
+              <span className="block w-5 h-px bg-[#a8b89a] transition-colors group-hover:bg-[#4a5e3a] dark:bg-[#606060] dark:group-hover:bg-white" />
+              <span className="block w-5 h-px bg-[#a8b89a] transition-colors group-hover:bg-[#4a5e3a] dark:bg-[#606060] dark:group-hover:bg-white" />
+              <span className="block w-5 h-px bg-[#a8b89a] transition-colors group-hover:bg-[#4a5e3a] dark:bg-[#606060] dark:group-hover:bg-white" />
             </SheetTrigger>
             <SheetContent side="right" className="bg-white dark:bg-[#0f0f0d] border-l border-[#e8e8e8] dark:border-[#222220] w-72">
               <nav className="mt-12 flex flex-col gap-1">
                 {[
                   { label: "About", href: "/" },
                   { label: "Process", href: "/process" },
-                  { label: "The Algorithm", href: "/architecture" },
-                  { label: "Gallery", href: "/gallery" },
+                  { label: "Algorithm", href: "/architecture" },
+                  { label: "Memories", href: "/memories" },
                   { label: "Contact", href: "/" },
                 ].map((item) => (
                   <a
                     key={item.label}
                     href={item.href}
-                    className="px-4 py-3 text-sm font-mono tracking-widest uppercase text-[#7a8c6e] hover:text-[#2d3828] hover:bg-[#f5f5f5] dark:text-[#5a7a4e] dark:hover:text-[#c8d4b4] dark:hover:bg-[#1a1a18] transition-colors"
+                    className="px-4 py-3 text-sm font-mono tracking-widest uppercase text-[#7a8c6e] hover:text-[#2d3828] hover:bg-[#f5f5f5] dark:text-[#909090] dark:hover:text-white dark:hover:bg-[#1a1a18] transition-colors"
                   >
                     {item.label}
                   </a>
@@ -198,42 +198,22 @@ export default function Home() {
         {phase === "idle" && (
           <FadeIn className="relative w-full max-w-lg mb-12 select-none flex flex-col items-center text-center">
             {/* Left background image */}
-            <div className="hidden md:block pointer-events-none absolute -left-44 top-0 bottom-0 w-36">
+            <div className="hidden md:block pointer-events-none absolute -left-44 top-1/2 -translate-y-1/2 w-32 aspect-[2/3]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="https://cdn.midjourney.com/5c09bef3-c39a-4a13-bdc5-17d771e45e14/0_0.png" alt="" className="w-full h-full object-cover grayscale opacity-[0.12] dark:opacity-[0.07]" />
             </div>
             {/* Right background image */}
-            <div className="hidden md:block pointer-events-none absolute -right-44 top-0 bottom-0 w-36">
+            <div className="hidden md:block pointer-events-none absolute -right-44 top-1/2 -translate-y-1/2 w-32 aspect-[2/3]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="https://cdn.midjourney.com/8c3c4317-9661-477f-843e-3379155392a3/0_3.png" alt="" className="w-full h-full object-cover grayscale opacity-[0.12] dark:opacity-[0.07]" />
             </div>
             {/* Title */}
-            <h1
-              style={{
-                fontFamily: "'Mona Sans', sans-serif",
-                fontWeight: 300,
-                fontStretch: "125%",
-                fontSize: "clamp(32px, 6vw, 56px)",
-                letterSpacing: "-0.02em",
-                lineHeight: 1,
-                color: "#1a1f17",
-              }}
-            >
+            <h1 className="font-mono tracking-[0.1em] uppercase text-[#4a5e3a] dark:text-[#c0c0be] font-light" style={{ fontSize: "clamp(16px, 2.5vw, 22px)" }}>
               The Botanist
             </h1>
             {/* Tagline */}
-            <p
-              className="mt-5 text-[#8a9c7e] dark:text-[#5a7a4e]"
-              style={{
-                fontFamily: "'Mona Sans', sans-serif",
-                fontWeight: 300,
-                fontStretch: "105%",
-                fontSize: "clamp(13px, 1.8vw, 16px)",
-                lineHeight: 1.5,
-                maxWidth: "30ch",
-              }}
-            >
-              A quantum algorithm that transforms your memories into something new.
+            <p className="mt-4 font-mono text-[11px] tracking-[0.15em] text-[#a8b89a] dark:text-[#707070] leading-relaxed" style={{ maxWidth: "36ch" }}>
+              A quantum algorithm that collapses your memories into something new.
             </p>
           </FadeIn>
         )}
@@ -246,7 +226,7 @@ export default function Home() {
       </div>
 
       {/* Prompt bar */}
-      <div className="relative z-10 px-6 pb-8 max-w-2xl w-full mx-auto">
+      <div className="relative z-10 px-6 pb-8 mb-16 max-w-2xl w-full mx-auto">
         {phase === "error" && (
           <div className="flex flex-col items-center gap-3 mb-4">
             <p className="text-xs text-red-400 font-mono">{errorMsg}</p>
@@ -256,27 +236,27 @@ export default function Home() {
         {phase === "done" ? (
           <FadeIn className="flex flex-col items-center gap-6 w-full max-w-2xl">
             {/* Generated image */}
-            <div className="w-full max-w-sm aspect-square border border-[#e8e8e8] dark:border-[#222220] overflow-hidden flex items-center justify-center bg-[#f9f9f7] dark:bg-[#141412]">
+            <div className="w-full max-w-sm aspect-[2/3] border border-[#e8e8e8] dark:border-[#222220] overflow-hidden flex items-center justify-center bg-[#f9f9f7] dark:bg-[#141412]">
               {imageUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={imageUrl} alt="Generated memory" className="w-full h-full object-cover" />
               ) : (
                 <div className="flex flex-col items-center gap-2">
-                  <svg className="w-4 h-4 text-[#c8d4b4] dark:text-[#2a3a24] animate-spin" viewBox="0 0 16 16" fill="none">
+                  <svg className="w-4 h-4 text-[#c8d4b4] dark:text-[#505050] animate-spin" viewBox="0 0 16 16" fill="none">
                     <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="2" strokeOpacity="0.2" />
                     <path d="M8 2a6 6 0 0 1 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                   </svg>
-                  <span className="text-[9px] font-mono text-[#c8d4b4] dark:text-[#2a3a24] tracking-widest uppercase">Generating image</span>
+                  <span className="text-[9px] font-mono text-[#c8d4b4] dark:text-[#505050] tracking-widest uppercase">Generating image</span>
                 </div>
               )}
             </div>
 
             {/* Prompts */}
             <div className="w-full space-y-2 text-center">
-              <p className="text-[10px] text-[#b0b8a8] dark:text-[#3a4a34] font-mono tracking-widest uppercase">Original</p>
-              <p className="text-xs text-[#7a8c6e] dark:text-[#6a8a5e] font-mono italic">&ldquo;{memory}&rdquo;</p>
-              <p className="text-[10px] text-[#b0b8a8] dark:text-[#3a4a34] font-mono tracking-widest uppercase mt-3">Quantum collapse</p>
-              <p className="text-xs text-[#2d3828] dark:text-[#c8d4b4] font-mono italic">&ldquo;{mutatedPrompt}&rdquo;</p>
+              <p className="text-[10px] text-[#b0b8a8] dark:text-[#505050] font-mono tracking-widest uppercase">Original</p>
+              <p className="text-xs text-[#7a8c6e] dark:text-[#c0c0be] font-mono italic">&ldquo;{memory}&rdquo;</p>
+              <p className="text-[10px] text-[#b0b8a8] dark:text-[#505050] font-mono tracking-widest uppercase mt-3">Quantum collapse</p>
+              <p className="text-xs text-[#2d3828] dark:text-[#e8e8e6] font-mono italic">&ldquo;{mutatedPrompt}&rdquo;</p>
             </div>
 
             {/* Circuit trace */}
@@ -319,7 +299,7 @@ export default function Home() {
             <Button
               variant="outline"
               onClick={handleReset}
-              className="border-[#c4d4b4] dark:border-[#2a3a24] text-[#6b7a5e] dark:text-[#4a6a3e] bg-transparent hover:bg-[#e8f0dc] dark:hover:bg-[#1a2218] hover:text-[#4a5e3a] dark:hover:text-[#8aaa6e] font-mono text-xs tracking-widest uppercase"
+              className="border-[#c4d4b4] dark:border-[#404040] text-[#6b7a5e] dark:text-[#707070] bg-transparent hover:bg-[#e8f0dc] dark:hover:bg-[#222222] hover:text-[#4a5e3a] dark:hover:text-white font-mono text-xs tracking-widest uppercase"
             >
               Plant another
             </Button>
@@ -335,7 +315,7 @@ export default function Home() {
               placeholder="Describe a memory, a scene, a feeling..."
               rows={3}
               autoFocus
-              className="resize-none bg-white dark:bg-[#0f0f0d] border-[#e0e0e0] dark:border-[#222220] text-[#2d3828] dark:text-[#c8d4b4] placeholder:text-[#c8c8c8] dark:placeholder:text-[#2a2a28] focus-visible:ring-0 focus-visible:border-[#e0e0e0] dark:focus-visible:border-[#222220] font-mono text-sm rounded-none transition-all"
+              className="resize-none bg-white dark:bg-[#0f0f0d] border-[#e0e0e0] dark:border-[#222220] text-[#2d3828] dark:text-[#e8e8e6] placeholder:text-[#c8c8c8] dark:placeholder:text-[#2a2a28] focus-visible:ring-0 focus-visible:border-[#e0e0e0] dark:focus-visible:border-[#222220] font-mono text-sm rounded-none transition-all"
             />
             <div className="flex items-center justify-between">
               <span className="text-[10px] text-[#b8b0a4] font-mono tracking-widest">
@@ -365,8 +345,8 @@ export default function Home() {
             { label: "Output",  value: "Synonym / modifier mutation" },
           ].map(({ label, value }) => (
             <div key={label} className="flex items-baseline gap-2">
-              <span className="text-[8px] font-mono tracking-[0.2em] uppercase text-[#c0c8b8] dark:text-[#3a4a34]">{label}</span>
-              <span className="text-[9px] font-mono text-[#a8b89a] dark:text-[#4a6a3e]">{value}</span>
+              <span className="text-[8px] font-mono tracking-[0.2em] uppercase text-[#c0c8b8] dark:text-[#505050]">{label}</span>
+              <span className="text-[9px] font-mono text-[#a8b89a] dark:text-[#707070]">{value}</span>
             </div>
           ))}
         </div>
@@ -503,7 +483,7 @@ function QuantumSteps({ prompt, onComplete }: { prompt: string; onComplete: () =
             {/* Text */}
             <div className="flex-1 min-w-0">
               <p className={`text-[10px] font-mono tracking-[0.18em] uppercase leading-none transition-colors duration-300 ${
-                current ? "text-[#2d3828]" : done ? "text-[#6b8a5e]" : "text-[#b8b8b8]"
+                current ? "text-[#2d3828] dark:text-white" : done ? "text-[#6b8a5e] dark:text-[#909090]" : "text-[#b8b8b8] dark:text-[#404040]"
               }`}>
                 {s.label}
               </p>
@@ -518,11 +498,11 @@ function QuantumSteps({ prompt, onComplete }: { prompt: string; onComplete: () =
             {/* Right indicator — fixed width so nothing shifts */}
             <div className="shrink-0 flex items-center justify-end" style={{ width: 24 }}>
               {done ? (
-                <svg viewBox="0 0 16 16" className="w-3.5 h-3.5 text-[#8aaa6e]" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <svg viewBox="0 0 16 16" className="w-3.5 h-3.5 text-[#8aaa6e] dark:text-white" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <polyline points="2,8 6,12 14,4" />
                 </svg>
               ) : current ? (
-                <svg className="w-3.5 h-3.5 text-[#8aaa6e] animate-spin" viewBox="0 0 16 16" fill="none">
+                <svg className="w-3.5 h-3.5 text-[#8aaa6e] dark:text-white animate-spin" viewBox="0 0 16 16" fill="none">
                   <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="2" strokeOpacity="0.2" />
                   <path d="M8 2a6 6 0 0 1 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                 </svg>
