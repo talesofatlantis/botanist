@@ -8,12 +8,22 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 type Phase = "idle" | "quantum" | "rendering" | "done" | "error";
 
+interface WordTrace {
+  original: string;
+  output: string;
+  bit: string;
+  angle: number;
+  operation: "skip" | "synonym" | "modifier" | "unchanged";
+  qubit: number;
+}
+
 export default function Home() {
   const [memory, setMemory] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [phase, setPhase] = useState<Phase>("idle");
   const [mutatedPrompt, setMutatedPrompt] = useState("");
   const [bitstring, setBitstring] = useState("");
+  const [trace, setTrace] = useState<WordTrace[]>([]);
   const [errorMsg, setErrorMsg] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -35,6 +45,7 @@ export default function Home() {
       const data = await res.json();
       setMutatedPrompt(data.mutated);
       setBitstring(data.bitstring);
+      setTrace(data.trace ?? []);
 
       setPhase("rendering");
       // Midjourney call goes here — for now we resolve after a beat
@@ -52,6 +63,7 @@ export default function Home() {
     setMemory("");
     setSubmitted(false);
     setPhase("idle");
+    setTrace([]);
     setTimeout(() => textareaRef.current?.focus(), 100);
   };
 
@@ -171,18 +183,56 @@ export default function Home() {
         )}
 
         {phase === "done" ? (
-          <div className="flex flex-col items-center gap-4">
+          <div className="flex flex-col items-center gap-6 w-full max-w-2xl">
+            {/* Prompts */}
             <div className="w-full space-y-2 text-center">
               <p className="text-[10px] text-[#b0b8a8] font-mono tracking-widest uppercase">Original</p>
               <p className="text-xs text-[#7a8c6e] font-mono italic">&ldquo;{memory}&rdquo;</p>
               <p className="text-[10px] text-[#b0b8a8] font-mono tracking-widest uppercase mt-3">Quantum collapse</p>
               <p className="text-xs text-[#2d3828] font-mono italic">&ldquo;{mutatedPrompt}&rdquo;</p>
-              <p className="text-[9px] text-[#c8d4b4] font-mono tracking-widest mt-2 break-all">{bitstring}</p>
             </div>
+
+            {/* Circuit trace */}
+            {trace.length > 0 && (
+              <div className="w-full border border-[#e8e8e8]">
+                {/* Header */}
+                <div className="grid grid-cols-[2fr_2fr_1fr_1fr_2fr] gap-0 border-b border-[#e8e8e8] bg-[#f9f9f7]">
+                  {["word", "output", "qubit", "bit / θ", "operation"].map((h) => (
+                    <div key={h} className="px-3 py-2 text-[8px] font-mono tracking-[0.2em] uppercase text-[#b0b8a8]">
+                      {h}
+                    </div>
+                  ))}
+                </div>
+                {/* Rows */}
+                {trace.filter(t => t.operation !== "skip").map((t, i) => (
+                  <div
+                    key={i}
+                    className="grid grid-cols-[2fr_2fr_1fr_1fr_2fr] gap-0 border-b border-[#f0f0ee] last:border-0"
+                  >
+                    <div className="px-3 py-2 text-[10px] font-mono text-[#7a8c6e]">{t.original}</div>
+                    <div className={`px-3 py-2 text-[10px] font-mono ${t.operation === "unchanged" ? "text-[#b0b8a8]" : "text-[#2d3828]"}`}>
+                      {t.output}
+                    </div>
+                    <div className="px-3 py-2 text-[10px] font-mono text-[#b0b8a8]">q{t.qubit}</div>
+                    <div className="px-3 py-2 text-[10px] font-mono text-[#b0b8a8]">
+                      {t.bit} / {t.angle.toFixed(2)}
+                    </div>
+                    <div className="px-3 py-2">
+                      <OperationBadge op={t.operation} />
+                    </div>
+                  </div>
+                ))}
+                {/* Bitstring footer */}
+                <div className="px-3 py-2 bg-[#f9f9f7] border-t border-[#e8e8e8]">
+                  <span className="text-[8px] font-mono text-[#c8d4b4] tracking-widest break-all">{bitstring}</span>
+                </div>
+              </div>
+            )}
+
             <Button
               variant="outline"
               onClick={handleReset}
-              className="border-[#c4d4b4] text-[#6b7a5e] bg-transparent hover:bg-[#e8f0dc] hover:text-[#4a5e3a] font-mono text-xs tracking-widest uppercase mt-2"
+              className="border-[#c4d4b4] text-[#6b7a5e] bg-transparent hover:bg-[#e8f0dc] hover:text-[#4a5e3a] font-mono text-xs tracking-widest uppercase"
             >
               Plant another
             </Button>
@@ -217,6 +267,21 @@ export default function Home() {
         )}
       </div>
     </main>
+  );
+}
+
+const OP_STYLES: Record<string, string> = {
+  synonym:   "text-[#4a7a3a] bg-[#eaf3e0] border-[#c4d4b4]",
+  modifier:  "text-[#5a6a8a] bg-[#eaf0f8] border-[#c0ccdd]",
+  unchanged: "text-[#b0b8a8] bg-transparent border-[#e0e0e0]",
+};
+
+function OperationBadge({ op }: { op: string }) {
+  const cls = OP_STYLES[op] ?? OP_STYLES.unchanged;
+  return (
+    <span className={`inline-block border px-1.5 py-0.5 text-[8px] font-mono tracking-widest uppercase ${cls}`}>
+      {op}
+    </span>
   );
 }
 
