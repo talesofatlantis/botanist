@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
-type Phase = "idle" | "quantum" | "rendering" | "done" | "error";
+type Phase = "idle" | "quantum" | "done" | "error";
 
 interface WordTrace {
   original: string;
@@ -27,11 +27,32 @@ export default function Home() {
   const [errorMsg, setErrorMsg] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  // Both the API call and the step animation must finish before we go to "done"
+  const apiDataRef = useRef<{ mutated: string; bitstring: string; trace: WordTrace[] } | null>(null);
+  const stepsCompleteRef = useRef(false);
+
+  const checkBothDone = () => {
+    if (stepsCompleteRef.current && apiDataRef.current) {
+      const d = apiDataRef.current;
+      setMutatedPrompt(d.mutated);
+      setBitstring(d.bitstring);
+      setTrace(d.trace);
+      setPhase("done");
+    }
+  };
+
+  const handleStepsComplete = () => {
+    stepsCompleteRef.current = true;
+    checkBothDone();
+  };
+
   const handleSubmit = async () => {
     if (!memory.trim()) return;
     setSubmitted(true);
     setPhase("quantum");
     setErrorMsg("");
+    apiDataRef.current = null;
+    stepsCompleteRef.current = false;
 
     try {
       const res = await fetch("/api/transform", {
@@ -43,14 +64,8 @@ export default function Home() {
       if (!res.ok) throw new Error("Transform failed");
 
       const data = await res.json();
-      setMutatedPrompt(data.mutated);
-      setBitstring(data.bitstring);
-      setTrace(data.trace ?? []);
-
-      setPhase("rendering");
-      // Midjourney call goes here — for now we resolve after a beat
-      await new Promise((r) => setTimeout(r, 1200));
-      setPhase("done");
+      apiDataRef.current = { mutated: data.mutated, bitstring: data.bitstring, trace: data.trace ?? [] };
+      checkBothDone();
     } catch (err) {
       console.error(err);
       setErrorMsg("The circuit failed to collapse. Try again.");
@@ -77,7 +92,6 @@ export default function Home() {
   const phaseLabel: Record<Phase, string | null> = {
     idle: null,
     quantum: "Passing through quantum circuit",
-    rendering: "Summoning the image",
     done: "Memory rendered",
     error: "Collapse failed",
   };
@@ -158,21 +172,7 @@ export default function Home() {
           </div>
         )}
 
-        {phase === "quantum" && <QuantumSteps prompt={memory} />}
-
-        {(phase === "rendering" || phase === "done") && (
-          <div className="w-full max-w-2xl aspect-video bg-[#f7f7f7] border border-[#e0e0e0] flex items-center justify-center mb-8 overflow-hidden">
-            {phase === "rendering" ? (
-              <RenderingPlaceholder />
-            ) : (
-              <div className="w-full h-full bg-gradient-to-br from-[#dce8d0] via-[#e8edd8] to-[#f0ece0] flex items-center justify-center">
-                <span className="text-[#a8b89a] font-mono text-xs tracking-widest">
-                  IMAGE PLACEHOLDER
-                </span>
-              </div>
-            )}
-          </div>
-        )}
+        {phase === "quantum" && <QuantumSteps prompt={memory} onComplete={handleStepsComplete} />}
       </div>
 
       {/* Prompt bar */}
@@ -335,7 +335,7 @@ function GrainOverlay() {
   );
 }
 
-function QuantumSteps({ prompt }: { prompt: string }) {
+function QuantumSteps({ prompt, onComplete }: { prompt: string; onComplete: () => void }) {
   const nonSpace = prompt.replace(/\s/g, "");
   const n = Math.min(Math.max(nonSpace.length, 4), 16);
   const wordCount = prompt.trim().split(/\s+/).filter(Boolean).length;
@@ -358,11 +358,15 @@ function QuantumSteps({ prompt }: { prompt: string }) {
       i += 1;
       if (i < steps.length) {
         setActive(i);
-        const delay = i === steps.length - 1 ? 99999 : 480 + Math.random() * 160;
-        timer = setTimeout(tick, delay);
+        const isLast = i === steps.length - 1;
+        const delay = isLast ? 1100 : 850 + Math.random() * 200;
+        timer = setTimeout(() => {
+          if (isLast) onComplete();
+          else tick();
+        }, delay);
       }
     };
-    let timer = setTimeout(tick, 520);
+    let timer = setTimeout(tick, 750);
     return () => clearTimeout(timer);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -428,22 +432,3 @@ function QuantumSteps({ prompt }: { prompt: string }) {
   );
 }
 
-function RenderingPlaceholder() {
-  const heights = [24, 36, 28, 40, 20];
-  return (
-    <div className="flex flex-col items-center gap-3">
-      <div className="flex gap-1.5 items-end">
-        {heights.map((h, i) => (
-          <div
-            key={i}
-            className="w-1 bg-[#8aaa6e] rounded-full animate-pulse"
-            style={{ height: `${h}px`, animationDelay: `${i * 150}ms` }}
-          />
-        ))}
-      </div>
-      <span className="text-[10px] font-mono text-[#a8b89a] tracking-[0.3em] uppercase">
-        Rendering
-      </span>
-    </div>
-  );
-}
