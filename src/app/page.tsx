@@ -24,6 +24,7 @@ export default function Home() {
   const [mutatedPrompt, setMutatedPrompt] = useState("");
   const [bitstring, setBitstring] = useState("");
   const [trace, setTrace] = useState<WordTrace[]>([]);
+  const [imageUrl, setImageUrl] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [dark, setDark] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -54,6 +55,15 @@ export default function Home() {
       setBitstring(d.bitstring);
       setTrace(d.trace);
       setPhase("done");
+      // Kick off image generation in the background
+      fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: d.mutated }),
+      })
+        .then((r) => r.json())
+        .then((r) => { if (r.url) setImageUrl(r.url); })
+        .catch(() => {});
     }
   };
 
@@ -95,6 +105,7 @@ export default function Home() {
     setSubmitted(false);
     setPhase("idle");
     setTrace([]);
+    setImageUrl("");
     setTimeout(() => textareaRef.current?.focus(), 100);
   };
 
@@ -235,6 +246,22 @@ export default function Home() {
 
         {phase === "done" ? (
           <FadeIn className="flex flex-col items-center gap-6 w-full max-w-2xl">
+            {/* Generated image */}
+            <div className="w-full max-w-sm aspect-square border border-[#e8e8e8] dark:border-[#222220] overflow-hidden flex items-center justify-center bg-[#f9f9f7] dark:bg-[#141412]">
+              {imageUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={imageUrl} alt="Generated memory" className="w-full h-full object-cover" />
+              ) : (
+                <div className="flex flex-col items-center gap-2">
+                  <svg className="w-4 h-4 text-[#c8d4b4] dark:text-[#2a3a24] animate-spin" viewBox="0 0 16 16" fill="none">
+                    <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="2" strokeOpacity="0.2" />
+                    <path d="M8 2a6 6 0 0 1 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  </svg>
+                  <span className="text-[9px] font-mono text-[#c8d4b4] dark:text-[#2a3a24] tracking-widest uppercase">Generating image</span>
+                </div>
+              )}
+            </div>
+
             {/* Prompts */}
             <div className="w-full space-y-2 text-center">
               <p className="text-[10px] text-[#b0b8a8] dark:text-[#3a4a34] font-mono tracking-widest uppercase">Original</p>
