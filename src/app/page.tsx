@@ -193,6 +193,8 @@ export default function Home() {
         </div>
       </header>
 
+      <div className="relative z-10 w-full border-t border-[#ebebeb] dark:border-[#1e1e1c]" />
+
       {/* Canvas */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 pt-16">
         {phase === "idle" && (
@@ -202,7 +204,7 @@ export default function Home() {
             <div className="w-full flex flex-col border-t border-[#ebebeb] dark:border-[#1e1e1c]">
               {[
                 { label: "Title", value: "The Botanist" },
-                { label: "Desc",  value: "A quantum circuit collapses your memory into a bitstring, mutating each word through synonym and modifier gates — then renders the result as an image." },
+                { label: "Desc",  value: "The Botanist is an algorithm. It runs your memory through a quantum circuit, collapsing it into a bitstring that mutates each word through synonym and modifier gates — then renders the result as an image." },
               ].map(({ label, value }) => (
                 <div key={label} className="flex items-baseline gap-3 px-0.5 py-2.5 border-b border-[#ebebeb] dark:border-[#1e1e1c]">
                   <span className="text-[8px] font-mono tracking-[0.2em] uppercase text-[#c0c8b8] dark:text-[#505050] shrink-0">{label}</span>
