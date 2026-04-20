@@ -154,7 +154,7 @@ export default function Home() {
       {/* Canvas */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6">
         {phase === "idle" && (
-          <div className="w-full max-w-sm mb-12 select-none">
+          <FadeIn className="w-full max-w-sm mb-12 select-none">
             {/* Title */}
             <div className="pb-5 border-b border-[#e8e8e8]">
               <h1
@@ -184,10 +184,14 @@ export default function Home() {
                 <span className="text-[10px] font-mono text-[#7a8c6e]">{value}</span>
               </div>
             ))}
-          </div>
+          </FadeIn>
         )}
 
-        {phase === "quantum" && <QuantumSteps prompt={memory} onComplete={handleStepsComplete} />}
+        {phase === "quantum" && (
+          <FadeIn>
+            <QuantumSteps prompt={memory} onComplete={handleStepsComplete} />
+          </FadeIn>
+        )}
       </div>
 
       {/* Prompt bar */}
@@ -199,7 +203,7 @@ export default function Home() {
         )}
 
         {phase === "done" ? (
-          <div className="flex flex-col items-center gap-6 w-full max-w-2xl">
+          <FadeIn className="flex flex-col items-center gap-6 w-full max-w-2xl">
             {/* Prompts */}
             <div className="w-full space-y-2 text-center">
               <p className="text-[10px] text-[#b0b8a8] font-mono tracking-widest uppercase">Original</p>
@@ -252,7 +256,7 @@ export default function Home() {
             >
               Plant another
             </Button>
-          </div>
+          </FadeIn>
         ) : (
           <div className="flex flex-col gap-3">
             <Textarea
@@ -283,6 +287,19 @@ export default function Home() {
         )}
       </div>
     </main>
+  );
+}
+
+function FadeIn({ children, className }: { children: React.ReactNode; className?: string }) {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => { const t = setTimeout(() => setVisible(true), 20); return () => clearTimeout(t); }, []);
+  return (
+    <div
+      className={className}
+      style={{ opacity: visible ? 1 : 0, transition: "opacity 0.5s ease" }}
+    >
+      {children}
+    </div>
   );
 }
 
