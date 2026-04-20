@@ -206,7 +206,7 @@ export default function Home() {
             </h1>
             {/* Tagline */}
             <p className="mt-4 font-mono text-[11px] tracking-[0.15em] text-[#a8b89a] dark:text-[#707070] leading-relaxed" style={{ maxWidth: "36ch" }}>
-              A quantum algorithm that collapses your memories into something new.
+              A quantum algorithm that transforms your memories into something new.
             </p>
           </FadeIn>
         )}
