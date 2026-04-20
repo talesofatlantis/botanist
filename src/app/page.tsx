@@ -359,72 +359,77 @@ function QuantumSteps({ prompt, onComplete }: { prompt: string; onComplete: () =
       if (i < steps.length) {
         setActive(i);
         const isLast = i === steps.length - 1;
-        const delay = isLast ? 1100 : 850 + Math.random() * 200;
+        const delay = isLast ? 1600 : 1400 + Math.random() * 300;
         timer = setTimeout(() => {
           if (isLast) onComplete();
           else tick();
         }, delay);
       }
     };
-    let timer = setTimeout(tick, 750);
+    let timer = setTimeout(tick, 900);
     return () => clearTimeout(timer);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div className="flex flex-col gap-0 mb-16 w-full max-w-sm">
+    <div className="flex flex-col mb-16 w-full max-w-xs">
       {steps.map((s, i) => {
-        const done   = i < active;
+        const done    = i < active;
         const current = i === active;
+        const pending = i > active;
+        const isLast  = i === steps.length - 1;
         return (
-          <div
-            key={i}
-            className={`flex items-start gap-4 px-4 py-3 border-b border-[#f0f0ee] transition-opacity duration-300 ${
-              i > active ? "opacity-25" : "opacity-100"
-            }`}
-          >
-            {/* Indicator */}
-            <div className="mt-0.5 w-4 h-4 shrink-0 flex items-center justify-center">
-              {done ? (
-                <svg viewBox="0 0 16 16" className="w-3 h-3 text-[#8aaa6e]" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polyline points="3,8 6.5,11.5 13,5" />
-                </svg>
-              ) : current ? (
-                <span className="block w-2 h-2 rounded-full bg-[#8aaa6e] animate-pulse" />
-              ) : (
-                <span className="block w-2 h-2 rounded-full border border-[#c8d4b4]" />
+          <div key={i} className="flex gap-4">
+            {/* Left rail: circle + connector */}
+            <div className="flex flex-col items-center">
+              {/* Circle */}
+              <div className={`relative w-6 h-6 rounded-full flex items-center justify-center shrink-0 transition-all duration-500 border ${
+                done    ? "bg-[#8aaa6e] border-[#8aaa6e]" :
+                current ? "bg-white border-[#8aaa6e]" :
+                          "bg-white border-[#dde4d6]"
+              }`}>
+                {done ? (
+                  <svg viewBox="0 0 16 16" className="w-3 h-3 text-white" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <polyline points="3,8 6.5,11.5 13,4.5" />
+                  </svg>
+                ) : current ? (
+                  <span className="block w-2 h-2 rounded-full bg-[#8aaa6e] animate-pulse" />
+                ) : (
+                  <span className="text-[8px] font-mono text-[#c8d4b4]">{i + 1}</span>
+                )}
+              </div>
+              {/* Connector line */}
+              {!isLast && (
+                <div className={`w-px flex-1 my-1 min-h-[16px] transition-colors duration-500 ${
+                  done ? "bg-[#8aaa6e]" : "bg-[#e8ede4]"
+                }`} />
               )}
             </div>
 
-            {/* Text */}
-            <div className="flex-1 min-w-0">
-              <p className={`text-[10px] font-mono tracking-[0.18em] uppercase leading-none ${
-                current ? "text-[#2d3828]" : done ? "text-[#7a8c6e]" : "text-[#c8c8c8]"
+            {/* Right: text */}
+            <div className={`pb-5 flex-1 pt-0.5 transition-opacity duration-300 ${pending ? "opacity-30" : "opacity-100"}`}>
+              <p className={`text-[10px] font-mono tracking-[0.18em] uppercase leading-none transition-colors duration-300 ${
+                current ? "text-[#2d3828]" : done ? "text-[#6b8a5e]" : "text-[#b8b8b8]"
               }`}>
                 {s.label}
               </p>
               {(done || current) && (
-                <p className="text-[9px] font-mono text-[#b0b8a8] mt-1 leading-relaxed">
+                <p className="text-[9px] font-mono text-[#b0b8a8] mt-1.5 leading-relaxed">
                   {s.detail}
                 </p>
               )}
+              {current && (
+                <div className="flex gap-0.5 items-end mt-2">
+                  {[0, 1, 2, 3].map((j) => (
+                    <span
+                      key={j}
+                      className="block w-0.5 bg-[#a8c490] animate-pulse rounded-full"
+                      style={{ height: `${6 + j * 3}px`, animationDelay: `${j * 120}ms` }}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
-
-            {/* Running indicator */}
-            {current && (
-              <div className="flex gap-0.5 items-end mt-1 shrink-0">
-                {[0, 1, 2].map((j) => (
-                  <span
-                    key={j}
-                    className="block w-0.5 bg-[#a8c490] animate-pulse"
-                    style={{
-                      height: `${8 + j * 4}px`,
-                      animationDelay: `${j * 150}ms`,
-                    }}
-                  />
-                ))}
-              </div>
-            )}
           </div>
         );
       })}
