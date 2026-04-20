@@ -118,6 +118,7 @@ export default function Home() {
               <nav className="mt-12 flex flex-col gap-1">
                 {[
                   { label: "About", href: "/" },
+                  { label: "Process", href: "/process" },
                   { label: "The Algorithm", href: "/architecture" },
                   { label: "Gallery", href: "/gallery" },
                   { label: "Contact", href: "/" },
