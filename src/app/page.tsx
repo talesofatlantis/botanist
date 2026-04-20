@@ -161,7 +161,17 @@ export default function Home() {
               alt="The Botanist"
               className="w-56 h-72 object-cover mx-auto mb-6 opacity-90 ring-1 ring-[#c8d4b4]"
             />
-            <h1 className="text-4xl font-light tracking-tight text-[#2d3828]">
+            <h1
+              style={{
+                fontFamily: "'Mona Sans', sans-serif",
+                fontWeight: 800,
+                fontStretch: "125%",
+                fontSize: "clamp(52px, 10vw, 96px)",
+                letterSpacing: "-0.03em",
+                lineHeight: 0.95,
+                color: "#1a1f17",
+              }}
+            >
               The Botanist
             </h1>
             <p className="text-sm text-[#7a8c6e] max-w-sm mx-auto leading-relaxed font-mono">
