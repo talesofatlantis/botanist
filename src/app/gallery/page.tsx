@@ -12,12 +12,20 @@ const submissions = [
     index: "001",
   },
   {
+    id: 7,
+    image: "https://cdn.midjourney.com/8c3c4317-9661-477f-843e-3379155392a3/0_3.png",
+    title: "Untitled",
+    memory: "",
+    date: "Apr 20, 2026",
+    index: "002",
+  },
+  {
     id: 2,
     image: "https://cdn.midjourney.com/282ede88-276e-407e-ad46-92929ebdebb5/0_0.png",
     title: "The Corridor",
     memory: "The corridor of my grandmother's house, wallpaper peeling at the edges.",
     date: "Apr 19, 2026",
-    index: "002",
+    index: "003",
   },
   {
     id: 3,
@@ -25,7 +33,7 @@ const submissions = [
     title: "Frozen Lake",
     memory: "Standing at the edge of a frozen lake, nobody else around.",
     date: "Apr 18, 2026",
-    index: "003",
+    index: "004",
   },
   {
     id: 4,
@@ -33,7 +41,7 @@ const submissions = [
     title: "Unknown Station",
     memory: "A train station in a city I never knew the name of.",
     date: "Apr 17, 2026",
-    index: "004",
+    index: "005",
   },
   {
     id: 5,
@@ -41,7 +49,7 @@ const submissions = [
     title: "Winter Chimney",
     memory: "Smoke rising from a chimney against a grey winter sky.",
     date: "Apr 16, 2026",
-    index: "005",
+    index: "006",
   },
   {
     id: 6,
@@ -49,7 +57,7 @@ const submissions = [
     title: "Radio in Another Room",
     memory: "The sound of a radio playing in another room.",
     date: "Apr 15, 2026",
-    index: "006",
+    index: "007",
   },
 ];
 

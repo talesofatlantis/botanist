@@ -196,36 +196,45 @@ export default function Home() {
       {/* Canvas */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6">
         {phase === "idle" && (
-          <FadeIn className="w-full max-w-sm mb-12 select-none">
-            {/* Title */}
-            <div className="pb-5 border-b border-[#e8e8e8] dark:border-[#222220]">
-              <h1
-                style={{
-                  fontFamily: "'Mona Sans', sans-serif",
-                  fontWeight: 300,
-                  fontStretch: "125%",
-                  fontSize: "clamp(28px, 5vw, 48px)",
-                  letterSpacing: "-0.02em",
-                  lineHeight: 1,
-                  color: "#1a1f17",
-                }}
-              >
-                The Botanist
-              </h1>
+          <FadeIn className="relative w-full max-w-lg mb-12 select-none flex flex-col items-center text-center">
+            {/* Left background image */}
+            <div className="hidden md:block pointer-events-none absolute -left-44 top-0 bottom-0 w-36">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="https://cdn.midjourney.com/5c09bef3-c39a-4a13-bdc5-17d771e45e14/0_0.png" alt="" className="w-full h-full object-cover grayscale opacity-[0.12] dark:opacity-[0.07]" />
             </div>
-
-            {/* Spec rows */}
-            {[
-              { label: "Type",    value: "Quantum memory interface" },
-              { label: "Circuit", value: "Qiskit Aer · up to 16 qubits" },
-              { label: "Method",  value: "Decoherence + measurement collapse" },
-              { label: "Output",  value: "Synonym / modifier mutation" },
-            ].map(({ label, value }) => (
-              <div key={label} className="flex items-baseline justify-between py-3 border-b border-[#f0f0ee] dark:border-[#1e1e1c]">
-                <span className="text-[9px] font-mono tracking-[0.2em] uppercase text-[#c0c8b8] dark:text-[#3a4a34]">{label}</span>
-                <span className="text-[10px] font-mono text-[#7a8c6e] dark:text-[#6a8a5e]">{value}</span>
-              </div>
-            ))}
+            {/* Right background image */}
+            <div className="hidden md:block pointer-events-none absolute -right-44 top-0 bottom-0 w-36">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="https://cdn.midjourney.com/8c3c4317-9661-477f-843e-3379155392a3/0_3.png" alt="" className="w-full h-full object-cover grayscale opacity-[0.12] dark:opacity-[0.07]" />
+            </div>
+            {/* Title */}
+            <h1
+              style={{
+                fontFamily: "'Mona Sans', sans-serif",
+                fontWeight: 300,
+                fontStretch: "125%",
+                fontSize: "clamp(32px, 6vw, 56px)",
+                letterSpacing: "-0.02em",
+                lineHeight: 1,
+                color: "#1a1f17",
+              }}
+            >
+              The Botanist
+            </h1>
+            {/* Tagline */}
+            <p
+              className="mt-5 text-[#8a9c7e] dark:text-[#5a7a4e]"
+              style={{
+                fontFamily: "'Mona Sans', sans-serif",
+                fontWeight: 300,
+                fontStretch: "105%",
+                fontSize: "clamp(13px, 1.8vw, 16px)",
+                lineHeight: 1.5,
+                maxWidth: "30ch",
+              }}
+            >
+              A quantum algorithm that transforms your memories into something new.
+            </p>
           </FadeIn>
         )}
 
@@ -344,6 +353,24 @@ export default function Home() {
           </div>
         )}
       </div>
+
+      {/* Footer spec */}
+      <footer className="relative z-10 px-6 pb-5 flex flex-col items-center gap-4">
+        <div className="w-full border-t border-[#ebebeb] dark:border-[#1e1e1c]" />
+        <div className="flex gap-6 md:gap-10 flex-wrap justify-center">
+          {[
+            { label: "Type",    value: "Quantum memory interface" },
+            { label: "Circuit", value: "Qiskit Aer · 16 qubits" },
+            { label: "Method",  value: "Decoherence + collapse" },
+            { label: "Output",  value: "Synonym / modifier mutation" },
+          ].map(({ label, value }) => (
+            <div key={label} className="flex items-baseline gap-2">
+              <span className="text-[8px] font-mono tracking-[0.2em] uppercase text-[#c0c8b8] dark:text-[#3a4a34]">{label}</span>
+              <span className="text-[9px] font-mono text-[#a8b89a] dark:text-[#4a6a3e]">{value}</span>
+            </div>
+          ))}
+        </div>
+      </footer>
     </main>
   );
 }
