@@ -158,7 +158,7 @@ export default function Home() {
           </div>
         )}
 
-        {phase === "quantum" && <QuantumNoise />}
+        {phase === "quantum" && <QuantumSteps prompt={memory} />}
 
         {(phase === "rendering" || phase === "done") && (
           <div className="w-full max-w-2xl aspect-video bg-[#f7f7f7] border border-[#e0e0e0] flex items-center justify-center mb-8 overflow-hidden">
@@ -335,50 +335,95 @@ function GrainOverlay() {
   );
 }
 
-function QuantumNoise() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+function QuantumSteps({ prompt }: { prompt: string }) {
+  const nonSpace = prompt.replace(/\s/g, "");
+  const n = Math.min(Math.max(nonSpace.length, 4), 16);
+  const wordCount = prompt.trim().split(/\s+/).filter(Boolean).length;
+
+  const steps = [
+    { label: "Initialise circuit",  detail: `${n} qubits · ${wordCount} words` },
+    { label: "Hadamard gates",      detail: "Place all qubits in superposition" },
+    { label: "RY rotations",        detail: "θ = ord(char) / 128 × π per qubit" },
+    { label: "CX entanglement",     detail: "Link adjacent qubits" },
+    { label: "Measure",             detail: "Collapse wavefunction → bitstring" },
+    { label: "Word mutation",       detail: "Synonym / modifier map applied" },
+  ];
+
+  const [active, setActive] = useState(0);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let raf: number;
-
-    const draw = () => {
-      const { width, height } = canvas;
-      const imageData = ctx.createImageData(width, height);
-      const data = imageData.data;
-
-      for (let i = 0; i < data.length; i += 4) {
-        const v = Math.random() * 60 + 160;
-        data[i] = v * 0.85;
-        data[i + 1] = v * 0.9;
-        data[i + 2] = v * 0.75;
-        data[i + 3] = 255;
+    setActive(0);
+    let i = 0;
+    const tick = () => {
+      i += 1;
+      if (i < steps.length) {
+        setActive(i);
+        const delay = i === steps.length - 1 ? 99999 : 480 + Math.random() * 160;
+        timer = setTimeout(tick, delay);
       }
-
-      ctx.putImageData(imageData, 0, 0);
-      raf = requestAnimationFrame(draw);
     };
-
-    draw();
-    return () => cancelAnimationFrame(raf);
+    let timer = setTimeout(tick, 520);
+    return () => clearTimeout(timer);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div className="flex flex-col items-center gap-6 mb-16">
-      <canvas
-        ref={canvasRef}
-        width={320}
-        height={180}
-        className="rounded-lg opacity-80"
-        style={{ imageRendering: "pixelated" }}
-      />
-      <p className="text-[10px] font-mono text-[#a8b89a] tracking-[0.3em] uppercase animate-pulse">
-        Quantum noise applied
-      </p>
+    <div className="flex flex-col gap-0 mb-16 w-full max-w-sm">
+      {steps.map((s, i) => {
+        const done   = i < active;
+        const current = i === active;
+        return (
+          <div
+            key={i}
+            className={`flex items-start gap-4 px-4 py-3 border-b border-[#f0f0ee] transition-opacity duration-300 ${
+              i > active ? "opacity-25" : "opacity-100"
+            }`}
+          >
+            {/* Indicator */}
+            <div className="mt-0.5 w-4 h-4 shrink-0 flex items-center justify-center">
+              {done ? (
+                <svg viewBox="0 0 16 16" className="w-3 h-3 text-[#8aaa6e]" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="3,8 6.5,11.5 13,5" />
+                </svg>
+              ) : current ? (
+                <span className="block w-2 h-2 rounded-full bg-[#8aaa6e] animate-pulse" />
+              ) : (
+                <span className="block w-2 h-2 rounded-full border border-[#c8d4b4]" />
+              )}
+            </div>
+
+            {/* Text */}
+            <div className="flex-1 min-w-0">
+              <p className={`text-[10px] font-mono tracking-[0.18em] uppercase leading-none ${
+                current ? "text-[#2d3828]" : done ? "text-[#7a8c6e]" : "text-[#c8c8c8]"
+              }`}>
+                {s.label}
+              </p>
+              {(done || current) && (
+                <p className="text-[9px] font-mono text-[#b0b8a8] mt-1 leading-relaxed">
+                  {s.detail}
+                </p>
+              )}
+            </div>
+
+            {/* Running indicator */}
+            {current && (
+              <div className="flex gap-0.5 items-end mt-1 shrink-0">
+                {[0, 1, 2].map((j) => (
+                  <span
+                    key={j}
+                    className="block w-0.5 bg-[#a8c490] animate-pulse"
+                    style={{
+                      height: `${8 + j * 4}px`,
+                      animationDelay: `${j * 150}ms`,
+                    }}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }
