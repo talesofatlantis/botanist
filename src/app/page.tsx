@@ -175,7 +175,7 @@ export default function Home() {
                 {[
                   { label: "About", href: "/about" },
                   { label: "Process", href: "/process" },
-                  { label: "Algorithm", href: "/architecture" },
+                  { label: "Algorithm", href: "/algorithm" },
                   { label: "Memories", href: "/memories" },
                   { label: "Contact", href: "/" },
                 ].map((item) => (
