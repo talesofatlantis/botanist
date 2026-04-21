@@ -5,7 +5,7 @@ import { useState, useRef } from "react";
 const submissions = [
   {
     id: 1,
-    image: "https://cdn.midjourney.com/5c09bef3-c39a-4a13-bdc5-17d771e45e14/0_0.png",
+    image: "https://cdn.midjourney.com/8c3c4317-9661-477f-843e-3379155392a3/0_3.png",
     title: "Garden, Late Afternoon",
     memory: "A garden in late afternoon light, the smell of earth after rain.",
     date: "Apr 20, 2026",
@@ -13,7 +13,7 @@ const submissions = [
   },
   {
     id: 7,
-    image: "https://cdn.midjourney.com/8c3c4317-9661-477f-843e-3379155392a3/0_3.png",
+    image: "https://cdn.midjourney.com/5c09bef3-c39a-4a13-bdc5-17d771e45e14/0_0.png",
     title: "Untitled",
     memory: "",
     date: "Apr 20, 2026",
@@ -21,7 +21,7 @@ const submissions = [
   },
   {
     id: 2,
-    image: "https://cdn.midjourney.com/282ede88-276e-407e-ad46-92929ebdebb5/0_0.png",
+    image: "https://cdn.midjourney.com/874be3c0-a868-404a-83b9-fc098d6fd22d/0_0.png",
     title: "The Corridor",
     memory: "The corridor of my grandmother's house, wallpaper peeling at the edges.",
     date: "Apr 19, 2026",
@@ -29,7 +29,7 @@ const submissions = [
   },
   {
     id: 3,
-    image: "https://cdn.midjourney.com/5c09bef3-c39a-4a13-bdc5-17d771e45e14/0_0.png",
+    image: "https://cdn.midjourney.com/233bb763-a573-40c1-82ba-2f6df53c7121/0_0.png",
     title: "Frozen Lake",
     memory: "Standing at the edge of a frozen lake, nobody else around.",
     date: "Apr 18, 2026",
@@ -37,7 +37,7 @@ const submissions = [
   },
   {
     id: 4,
-    image: "https://cdn.midjourney.com/282ede88-276e-407e-ad46-92929ebdebb5/0_0.png",
+    image: "https://cdn.midjourney.com/96e2423a-1d72-4319-bcf2-6a23abbbc143/0_3.png",
     title: "Unknown Station",
     memory: "A train station in a city I never knew the name of.",
     date: "Apr 17, 2026",
@@ -45,7 +45,7 @@ const submissions = [
   },
   {
     id: 5,
-    image: "https://cdn.midjourney.com/5c09bef3-c39a-4a13-bdc5-17d771e45e14/0_0.png",
+    image: "https://cdn.midjourney.com/874be3c0-a868-404a-83b9-fc098d6fd22d/0_0.png",
     title: "Winter Chimney",
     memory: "Smoke rising from a chimney against a grey winter sky.",
     date: "Apr 16, 2026",
@@ -53,7 +53,7 @@ const submissions = [
   },
   {
     id: 6,
-    image: "https://cdn.midjourney.com/282ede88-276e-407e-ad46-92929ebdebb5/0_0.png",
+    image: "https://cdn.midjourney.com/233bb763-a573-40c1-82ba-2f6df53c7121/0_0.png",
     title: "Radio in Another Room",
     memory: "The sound of a radio playing in another room.",
     date: "Apr 15, 2026",
