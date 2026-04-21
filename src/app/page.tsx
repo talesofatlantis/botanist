@@ -173,7 +173,7 @@ export default function Home() {
             <SheetContent side="right" className="bg-white dark:bg-[#0f0f0d] border-l border-[#e8e8e8] dark:border-[#222220] w-72">
               <nav className="mt-12 flex flex-col gap-1">
                 {[
-                  { label: "About", href: "/" },
+                  { label: "About", href: "/about" },
                   { label: "Process", href: "/process" },
                   { label: "Algorithm", href: "/architecture" },
                   { label: "Memories", href: "/memories" },
