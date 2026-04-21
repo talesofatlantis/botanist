@@ -2,7 +2,22 @@
 
 import { useState } from "react";
 
-const tabs = [
+type Row = { label: string; value: string; images?: string[] };
+
+type Tab = {
+  id: string;
+  label: string;
+  parent?: string;
+  rows: Row[];
+};
+
+type NavItem = {
+  id: string;
+  label: string;
+  children?: { id: string; label: string }[];
+};
+
+const tabs: Tab[] = [
   {
     id: "medium",
     label: "The Medium",
@@ -66,44 +81,105 @@ const tabs = [
     ],
   },
   {
-    id: "artists",
+    id: "refik",
     label: "Refik Anadol",
+    parent: "Artists",
     rows: [
       {
-        label: "Refik Anadol",
+        label: "Who",
         value:
-          "Turkish-American media artist based in Los Angeles. His core idea: data has an aesthetic — it can be made to feel. He collects massive datasets, trains custom AI models, and visualises the results as fluid, living sculptures. He calls the AI his \"thinking brush\" and the data his \"pigment.\" His studio has processed over 4 billion images since 2016.",
+          "Refik Anadol is a Turkish-American media artist and director based in Los Angeles. His core idea is simple and radical: data has an aesthetic — it can be made to feel.",
+      },
+      {
+        label: "Practice",
+        value:
+          "He collects massive datasets (archives, sounds, brainwaves, nature imagery), trains custom AI models on them, and visualises the results as fluid, living sculptures — projected onto buildings, displayed on giant LED walls, or installed in museums. He calls the AI his \"thinking brush\" and the data his \"pigment.\"",
+      },
+      {
+        label: "Scale",
+        value:
+          "His studio of ~30 people has processed over 4 billion images and trained 300+ AI models since 2016. Think of him less as someone who uses AI as a tool, and more as someone who collaborates with it.",
       },
       {
         label: "Melting Memories",
         value:
-          "Anadol's 2018 work made brainwave data visible. Subjects in EEG headsets focused on a childhood memory; the beta and theta frequencies were processed into morphing, cloud-like forms on an LED wall. Your memory, as rendered by a machine.",
+          "Melting Memories (2018) is one of his most intimate works. He worked with neuroscientists at UCSF, putting subjects in EEG headsets and asking them to focus on a specific childhood memory. The resulting brainwave data — beta and theta frequencies — was processed mathematically and turned into morphing, cloud-like forms on a large LED wall. The piece made the invisible architecture of remembering visible. It's tender and strange: your memory, as rendered by a machine.",
+        images: [
+          "https://images.gitbook.com/__img/dpr=2,width=760,onerror=redirect,format=auto,signature=-661282770/https%3A%2F%2Ffiles.gitbook.com%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252FPQzVPhuj5JRJEMmpZjYa%252Fuploads%252FASlMeiC2I5U5i6C4rl42%252FUI-Test-Video-2400x1350.jpg%3Falt%3Dmedia%26token%3D0dfbc37a-7cc3-4c7f-a464-2f6c53a9a0da",
+          "https://images.gitbook.com/__img/dpr=2,width=760,onerror=redirect,format=auto,signature=-1911302450/https%3A%2F%2Ffiles.gitbook.com%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252FPQzVPhuj5JRJEMmpZjYa%252Fuploads%252FsQjHvElUIjCo4vgn3Qyq%252FUI-Test-Video-2-2400x1350.jpg%3Falt%3Dmedia%26token%3Daadc12e7-4903-4efc-96ab-4616e6bf4548",
+        ],
       },
       {
         label: "Quantum Memories",
         value:
-          "In 2020, Anadol fed Google's quantum computing research data and 200 million nature images into a GAN. The philosophical driver was the Many-Worlds Interpretation — every quantum event spawns a parallel universe. What does nature look like in a parallel world, as imagined by a machine that learned from ours?",
+          "Quantum Memories (2020) scaled things up dramatically. Anadol fed Google's quantum computing research data — combined with around 200 million nature images — into a GAN, producing swirling, iridescent, almost hallucinatory visuals. The idea was to ask: what does quantum reality look like? What does a machine dream when it processes something beyond human comprehension? It's more cosmic and overwhelming than Melting Memories — less about intimacy, more about awe.",
+        images: [
+          "https://images.gitbook.com/__img/dpr=2,width=760,onerror=redirect,format=auto,signature=-14332202/https%3A%2F%2Ffiles.gitbook.com%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252FPQzVPhuj5JRJEMmpZjYa%252Fuploads%252FlaGQbNtJdbYAwHWapNJw%252F2338330_1_m.jpg%3Falt%3Dmedia%26token%3De01de6f4-f9d0-499b-9854-3f36b6e33146",
+        ],
       },
       {
-        label: "Claude Monet",
+        label: "Dataset",
         value:
-          "Monet's series paintings — haystacks, water lilies, Rouen Cathedral — weren't about capturing a subject but about capturing a moment of seeing, repeated and varied over time. The same scene in different light, across years. The Botanist borrows this: the same memory, same quantum signature, rendered differently each time the model runs.",
+          "Over 200 million publicly available photographs of nature — clouds, water, Australian landscapes, and even images of Earth shot from the International Space Station. Anadol frames this as humanity's collective memory of nature — not one person's experience of a forest, but the sum of how billions of people have photographed and remembered the natural world.",
       },
       {
-        label: "Matt Komo",
+        label: "Cleaning",
         value:
-          "Filmmaker and visual artist known for cinematic, atmospheric work. His images have a painterly quality — light as a subject in itself. His visual language — the feeling of being somewhere just out of reach — is part of what the generated images aim for: familiar but displaced.",
+          "Image analysis software stripped out any photo containing people or built structures, leaving only pure nature. This curation step is more artistic than it sounds — he's already making aesthetic and conceptual decisions about what \"nature\" means.",
       },
       {
-        label: "A Forgotten Life",
+        label: "Quantum layer",
         value:
-          "The emotional undercurrent of this project. A forgotten life is not lost — it is transformed. The quantum mutation of your memory mirrors what forgetting already does: it doesn't erase, it distorts, softens, substitutes.",
+          "Anadol worked directly with Google's Quantum AI research team, using their quantum computing software alongside a traditional supercomputer. The key ingredient was quantum noise — the random, irreducible fluctuations that occur at the subatomic level. In regular computing, randomness is simulated. In quantum computing, it's real, generated by the unpredictable behaviour of quantum particles. Anadol used this as a generative seed, creating what he called \"noise-generated datasets.\" This is what gives the visuals their particular quality of movement: not smooth, not predicted, but genuinely uncertain.",
+      },
+      {
+        label: "Concept",
+        value:
+          "The Many-Worlds Interpretation of quantum mechanics — the idea that every quantum event spawns a parallel universe. Anadol was literally asking: what does nature look like in a parallel world, as imagined by a machine that has learned from ours?",
+      },
+      {
+        label: "Installation",
+        value:
+          "Displayed on a 10×10 metre LED wall at the National Gallery of Victoria. The piece was also interactive — sensors tracked visitors' movements in real time, and their positions subtly influenced the generative output. The audience became entangled with the artwork, mirroring the quantum concept of the observer affecting the observed.",
+      },
+    ],
+  },
+  {
+    id: "santiago",
+    label: "Santiago Sares",
+    parent: "Artists",
+    rows: [
+      {
+        label: "Who",
+        value:
+          "Santiago Sares is a digital artist born in Buenos Aires in 1991. He operates at the intersection of human psychology and intelligent systems, with over a decade of international practice.",
+      },
+      {
+        label: "Practice",
+        value:
+          "Sares develops immersive generative art through two primary frameworks: Quantum Consciousness and Generative Emotions. His methodology — \"Data Poetics\" — synthesizes artificial intelligence, biometric data, 3D environments, and generative art to transform abstract datasets into meaningful visual experiences.",
+      },
+      {
+        label: "Themes",
+        value:
+          "His work investigates emotion, identity, and consciousness fragmentation — examining how technology reveals truths about human nature as systems reshape perception.",
+      },
+      {
+        label: "Philosophy",
+        value:
+          "Sares views chaos as creatively generative, seeking order in disorder. He conceptualises AI work as intentional direction where \"intention imposes form on computation\" — positioning art as testimony against pure automation.",
+      },
+      {
+        label: "Exhibitions",
+        value:
+          "Collaborated with Serpentine UK and Alias Studio on Inspicio, exploring inspiration through emotion detection and custom generative models. Participated in AIHokusai residency (Japan, 2024) and Primavera Digitale (Florence, 2025). Exhibited internationally across Italy, US, China, Canada, UK, Denmark, Argentina, Portugal, France, Estonia, and Spain — venues include Beeple Studios, SMTH, and Palacio Libertad, Buenos Aires.",
       },
     ],
   },
   {
     id: "mwi",
     label: "Many-Worlds",
+    parent: "Theories",
     rows: [
       {
         label: "The problem",
@@ -180,6 +256,21 @@ const tabs = [
   },
 ];
 
+// Build nav structure: group children under their parent label
+const navItems: NavItem[] = [];
+const seen = new Set<string>();
+for (const t of tabs) {
+  if (t.parent) {
+    if (!seen.has(t.parent)) {
+      seen.add(t.parent);
+      navItems.push({ id: `__group_${t.parent}`, label: t.parent, children: [] });
+    }
+    navItems.find((n) => n.label === t.parent)!.children!.push({ id: t.id, label: t.label });
+  } else {
+    navItems.push({ id: t.id, label: t.label });
+  }
+}
+
 export default function ProcessPage() {
   const [active, setActive] = useState("medium");
   const current = tabs.find((t) => t.id === active)!;
@@ -198,27 +289,50 @@ export default function ProcessPage() {
       </header>
 
       <div className="flex flex-1">
-        {/* Sidebar tabs */}
+        {/* Sidebar */}
         <aside className="shrink-0 w-40 border-r border-[#ebebeb] dark:border-[#1e1e1c] flex flex-col pt-8">
-          {tabs.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => setActive(t.id)}
-              className={`text-left px-6 py-3 text-[9px] tracking-[0.2em] uppercase transition-colors border-b border-[#ebebeb] dark:border-[#1e1e1c] ${
-                active === t.id
-                  ? "text-[#2d3828] dark:text-[#e8e8e6] bg-[#f9f9f7] dark:bg-[#141412]"
-                  : "text-[#a8b89a] dark:text-[#505050] hover:text-[#6b7a5e] dark:hover:text-[#909090]"
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
+          {navItems.map((item) =>
+            item.children ? (
+              <div key={item.id}>
+                {/* Parent label — not clickable */}
+                <div className="px-6 py-3 text-[9px] tracking-[0.2em] uppercase text-[#c0c8b8] dark:text-[#404040] border-b border-[#ebebeb] dark:border-[#1e1e1c]">
+                  {item.label}
+                </div>
+                {/* Children */}
+                {item.children.map((child) => (
+                  <button
+                    key={child.id}
+                    onClick={() => setActive(child.id)}
+                    className={`w-full text-left pl-9 pr-4 py-2.5 text-[9px] tracking-[0.15em] uppercase transition-colors border-b border-[#ebebeb] dark:border-[#1e1e1c] ${
+                      active === child.id
+                        ? "text-[#2d3828] dark:text-[#e8e8e6] bg-[#f9f9f7] dark:bg-[#141412]"
+                        : "text-[#a8b89a] dark:text-[#505050] hover:text-[#6b7a5e] dark:hover:text-[#909090]"
+                    }`}
+                  >
+                    — {child.label}
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <button
+                key={item.id}
+                onClick={() => setActive(item.id)}
+                className={`text-left px-6 py-3 text-[9px] tracking-[0.2em] uppercase transition-colors border-b border-[#ebebeb] dark:border-[#1e1e1c] ${
+                  active === item.id
+                    ? "text-[#2d3828] dark:text-[#e8e8e6] bg-[#f9f9f7] dark:bg-[#141412]"
+                    : "text-[#a8b89a] dark:text-[#505050] hover:text-[#6b7a5e] dark:hover:text-[#909090]"
+                }`}
+              >
+                {item.label}
+              </button>
+            )
+          )}
         </aside>
 
         {/* Content */}
         <div className="flex-1 px-8 py-8 max-w-2xl">
           <div className="flex flex-col border-t border-[#ebebeb] dark:border-[#1e1e1c]">
-            {current.rows.map(({ label, value }) => (
+            {current.rows.map(({ label, value, images }) => (
               <div
                 key={label}
                 className="flex gap-6 px-0.5 py-4 border-b border-[#ebebeb] dark:border-[#1e1e1c]"
@@ -226,9 +340,19 @@ export default function ProcessPage() {
                 <span className="text-[8px] tracking-[0.2em] uppercase text-[#c0c8b8] dark:text-[#505050] shrink-0 pt-0.5 w-20">
                   {label}
                 </span>
-                <p className="text-[11px] text-[#6b7a5e] dark:text-[#909090] leading-relaxed">
-                  {value}
-                </p>
+                <div className="flex flex-col gap-3 flex-1">
+                  <p className="text-[11px] text-[#6b7a5e] dark:text-[#909090] leading-relaxed">
+                    {value}
+                  </p>
+                  {images && (
+                    <div className="flex flex-col gap-2">
+                      {images.map((src, i) => (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img key={i} src={src} alt="" className="w-full object-cover" />
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
           </div>
