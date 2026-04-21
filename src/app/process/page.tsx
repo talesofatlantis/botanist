@@ -67,7 +67,7 @@ const tabs = [
   },
   {
     id: "artists",
-    label: "Artists",
+    label: "Refik Anadol",
     rows: [
       {
         label: "Refik Anadol",
@@ -103,7 +103,7 @@ const tabs = [
   },
   {
     id: "quantum",
-    label: "Quantum",
+    label: "IBM Qiskit",
     rows: [
       {
         label: "Superposition",
@@ -139,6 +139,42 @@ const tabs = [
         label: "Many-Worlds",
         value:
           "The philosophical frame, borrowed from Anadol: the Many-Worlds Interpretation holds that every quantum measurement spawns a branching reality. The bitstring your memory produces is the branch it falls into — one possible world among many.",
+      },
+    ],
+  },
+  {
+    id: "mwi",
+    label: "Many-Worlds",
+    rows: [
+      {
+        label: "The problem",
+        value:
+          "In quantum mechanics, particles exist in superposition — multiple states simultaneously. When you measure one, it collapses to a single definite value. The Copenhagen interpretation just says: that's what measurement does, don't ask why. Hugh Everett III, who proposed MWI in 1957, found that unsatisfying.",
+      },
+      {
+        label: "Core idea",
+        value:
+          "Instead of the wavefunction collapsing, Everett argued it never collapses. Every time a quantum measurement occurs, the universe literally branches — every possible outcome happens, just in different branches of reality. Each branch is equally real. There is no collapse, only divergence.",
+      },
+      {
+        label: "In practice",
+        value:
+          "When your quantum circuit measures a qubit and gets 0 — in another branch, it got 1. Both outcomes exist. Both worlds continue. You just happen to be in the one that got 0.",
+      },
+      {
+        label: "Determinism",
+        value:
+          "There is no randomness in MWI — everything is deterministic. What looks like probability is just you not knowing which branch you're in. Every decision, every particle interaction, every radioactive decay is constantly spawning new branches — growing at every quantum event, everywhere in the universe, at all times.",
+      },
+      {
+        label: "Controversy",
+        value:
+          "MWI is mathematically elegant — you don't need to add any special collapse rule. But it's philosophically extreme. It requires accepting that an almost incomprehensible number of parallel realities exist, none more real than any other. You can't interact with other branches. You can't prove they exist. Some physicists love it for its cleanliness; others find it extravagant.",
+      },
+      {
+        label: "Relevance",
+        value:
+          "When The Botanist runs your memory through the circuit and produces a bitstring — that string represents one collapsed branch. The other possible bitstrings, the other possible mutations, the other possible images — they exist too, in MWI. You just landed in this one.",
       },
     ],
   },
