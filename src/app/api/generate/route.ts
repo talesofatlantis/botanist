@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const REPLICATE_API = "https://api.replicate.com/v1";
-const MODEL = "google/nano-banana-2";
+const MODEL = "lucataco/dreamshaper-xl-turbo";
 
 export async function POST(req: NextRequest) {
   const { prompt } = await req.json();
@@ -22,7 +22,17 @@ export async function POST(req: NextRequest) {
       "Content-Type": "application/json",
       Prefer: "wait=30",
     },
-    body: JSON.stringify({ input: { prompt } }),
+    body: JSON.stringify({
+      input: {
+        prompt,
+        negative_prompt: "ugly, blurry, low quality, text, watermark, signature, deformed, disfigured",
+        width: 768,
+        height: 1152,
+        num_inference_steps: 6,
+        guidance_scale: 2.0,
+        scheduler: "DPM++ SDE Karras",
+      },
+    }),
   });
 
   if (!createRes.ok) {
